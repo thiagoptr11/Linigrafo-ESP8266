@@ -23,9 +23,9 @@ unsigned int tela = 1;
 #define SCREEN_HEIGHT 64
 
 // Configurações do ThingSpeak
-const char apn[] = "zap.vivo.com.br"; // APN do seu provedor de dados móveis
-const char user[] = "vivo"; // Usuário do APN (geralmente não é necessário)
-const char pass[] = "vivo"; // Senha do APN (geralmente não é necessário)
+const char apn[] = "claro.com.br"; // APN do seu provedor de dados móveis
+const char user[] = "claro"; // Usuário do APN (geralmente não é necessário)
+const char pass[] = "claro"; // Senha do APN (geralmente não é necessário)
 
 const char* thingSpeakAPIKey = "RZLWKKYDXI871Z6A";
 const char* thingSpeakServer = "api.thingspeak.com";
@@ -120,10 +120,16 @@ void setup() {
   sendATCommand("AT+CIPMUX=0", 1000, "OK");
 
   // Conecta à rede
-  String cmd = "AT+CSTT=\"" + String(apn) + "\",\"" + String(user) + "\",\"" + String(pass) + "\"";
-  sendATCommand(cmd.c_str(), 1000, "OK");
-  sendATCommand("AT+CIICR", 3000, "OK");
-  sendATCommand("AT+CIFSR", 1000, ".");
+  //String cmd = "AT+CSTT=\"" + String(apn) + "\",\"" + String(user) + "\",\"" + String(pass) + "\"";
+  //sendATCommand(cmd.c_str(), 1000, "OK");
+  //sendATCommand("AT+CIICR", 3000, "OK");
+  //sendATCommand("AT+CIFSR", 1000, ".");
+
+  sendATCommand("AT+CSTT=\"claro.com.br\",\"claro\",\"claro\"", 1000, "OK"); // Configura APN
+  sendATCommand("AT+CIICR", 3000, "OK");  // Ativa a conexão GPRS
+  sendATCommand("AT+CIFSR", 3000, ".");  // Verifica se há um endereço IP
+  sendATCommand("AT+CIPSTART=\"TCP\",\"api.thingspeak.com\",80", 5000, "CONNECT OK");
+  //sendATCommand("AT+CIPSTART=\"TCP\",\"www.google.com\",80", 5000, "CONNECT OK");
 
   display.clearDisplay();
   display.setCursor(0, 0);
